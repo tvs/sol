@@ -20,7 +20,7 @@ link:
 	$(CC) $(COPTS) $(BUILDDIR)/*.o -o sol
 
 clean:
-	rm $(BUILDDIR)/*.o
+	@rm -rf $(BUILDDIR)/*.o
 
 clobber: clean
-	rm sol
+	@rm -rf sol
