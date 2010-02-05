@@ -32,19 +32,26 @@ public:
 	Camera(Vector3D eye, Vector3D look_at, Vector3D up, float fov, float aspect) 
       		: e(eye), p(look_at), u(up), fovy(fov), a(aspect)
    	{
-      	uvw.initFromWV( p-e, u );
-		h = -2*tan((fovy/2)*PI/180);
+		Vector3D D = unitVector(p - e);
+		Vector3D R = unitVector(cross(D, u));
+		Vector3D U = cross(R, D);
+		
+		uvw.set(R, U, D);
+	
+		h = 2*tan((fovy/2)*PI/180);
 		w = h * a;
    	}
 
-   	Ray getRay(float i, float j, float H, float W) 
+   	Ray getRay(float xx, float yy, float W, float H) 
    	{
-		float x = (w/(W-1))*i - (w/2);
-		float y = (-h/(H-1))*j + (h/2);
+		float x = (w/(W-1))*xx - (w/2.0);
+		float y = ((-h)/(H-1))*yy + (h/2.0);
 	
 		Vector3D o = e;
-		Vector3D d = unitVector(x*uvw.U + y*uvw.V + uvw.W);
-      	return Ray(o, d);
+		Vector3D d = x*uvw.U + y*uvw.V + uvw.W;
+		Vector3D dd = unitVector(d);
+		
+      	return Ray(o, dd);
    	}
 };
 

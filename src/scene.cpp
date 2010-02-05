@@ -12,11 +12,12 @@ void Scene::addLight(Light *l) {
 Image Scene::createImage(int H, int W) {
 	Image im(H, W);
 	
-	for (int i = 0; i < H; i++) {
-        for (int j = 0; j < W; j++) {
-			// Use the sampler to determine I and J and average the resultant pixels
-	    	Ray r = cam.getRay(i, j, H, W);
-			im.set(i, j, traceRay(r, MAX_RECURSION_DEPTH));
+	// Along the y-axis
+	for (int y = 0; y < H; y++) {
+		// Along the x-axis
+        for (int x = 0; x < W; x++) {
+			Ray r = cam.getRay(x, y, W, H);
+			im.set(x, H-y-1, traceRay(r, MAX_RECURSION_DEPTH));
         }
     }
 	return im;
@@ -41,13 +42,17 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 	if (is_a_hit) {
 		bool entering;
 		Vector3D N = rec.uvw.W;
+		N.makeUnitVector();
+		
+		// Incoming view direction
+		Vector3D v = r.direction();
 
 		// (4) if d (dot) N < 0
 		// 			entering <- true
 		// 		else
 		// 			entering <- false
 		//			N <- -N (flip the surface normal)
-		if (dot(r.direction(), N) < 0)
+		if (dot(v, N) < 0)
 			entering = true;
 		else {
 			entering = false;
@@ -63,13 +68,11 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 		float Gi = rec.material->KA * ambient.g();
 		float Bi = rec.material->KA * ambient.b();
 		
-		// Incoming view direction
-		Vector3D v = unitVector(rec.p - cam.e);
-		
 		// Local illumination
 		for (unsigned int j = 0; j < lights.size(); j++) {
+			Light *light = lights[j];
 			// Incoming light direction
-			Vector3D inc = unitVector(lights[j]->pos - rec.p);
+			Vector3D inc = unitVector(light->pos - rec.p);
 			bool occluded = false;
 			
 			// Shadow feeler ray
@@ -80,7 +83,7 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 										tmax2, shadowMat))
 				{
 					if (shadowMat->isTransmissive()) {
-						shadowFilter = shadowMat->KT;
+						shadowFilter -= shadowMat->KT;
 					} else {
 						occluded = true;
 					}
@@ -89,13 +92,15 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 			}
 			
 			if (!occluded) {
-				Light *light = lights[j];
 				// Reflection direction		
 				Vector3D ref = reflect(inc, N);
 				ref.makeUnitVector();
 				
 				float spec = dot(ref, v);
-				float nspec = pow(spec, rec.material->alpha);
+				float nspec = 0;
+				if (spec > 0) {
+					nspec = pow(spec, rec.material->alpha);
+				}
 							
 				float diffuse = rec.material->KD * dot(inc, N);
 				float specular = rec.material->KS * nspec;
@@ -106,15 +111,15 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 			
 				// (5) Compute I[local] using local illum model (Phong model)
 				// TODO: Refactor so lighting model can be "dropped in"
-				Ri += mult*((diffuse*light->color.r())+(specular*light->color.r()));
-				Gi += mult*((diffuse*light->color.g())+(specular*light->color.g()));
-				Bi += mult*((diffuse*light->color.b())+(specular*light->color.b()));
+				Ri += mult*((diffuse*light->color.r())+(specular*light->color.r()) );
+				Gi += mult*((diffuse*light->color.g())+(specular*light->color.g()) );
+				Bi += mult*((diffuse*light->color.b())+(specular*light->color.b()) );
 			}
 		}
 		iLocal = RGB(Ri, Gi, Bi);
 			
 		// (6) if depth <= 0, return I[local]
-		if (depth <= 0) return RGB(Ri, Gi, Bi);// * rec.material->texture->value(rec.uv, rec.texp);
+		if (depth <= 0) return RGB(Ri, Gi, Bi);
 
 		// (7) I[reflect] <- (0, 0, 0)
 		// 		if surface reflects light (rec.material->isReflective())
@@ -132,31 +137,26 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 		// 		compute transmitted ray T using Snell's law
 		// 		if not total internal reflection
 		// 			I[transmit] <- traceRay(T, depth-1, env')
+		// TODO: add env variable for material stack
 		if (rec.material->isTransmissive()) {
-			Vector3D D = r.direction();
-			float n = rec.material->KR;
-			float np = AIR_REFRACTION;
+			float n1 = rec.material->KR;
+			float n2 = AIR_REFRACTION;
+			float n = (entering ? (n2/n1) : (n1/n2));
 			
-			float partOne = 1 - (entering ? ((n * n)/(np * np)) : ((np * np)/(n * n)));
-			float partTwo = (1 - dot(D, N));
+			float c1 = -dot(N, v);
+			float check = 1 - (n*n) * (1 - (c1 * c1));
+
+			if (check > 0) {
+				float c2 = sqrtf(check);
 			
-			float check = partOne * (partTwo * partTwo);
-			if (check >= 0) {
-				float snell = (entering ? n/np : np/n);
-				Vector3D mid = ((D - N) * dot(N, D)) - N;
-			
-				float srt = sqrt(check);
-			
-				Vector3D Td = snell * mid * srt;
-				Td.makeUnitVector();
-				Ray T(rec.p, Td);
+				Vector3D Td = (n * v) + (n * c1 - c2) * N;
+				// Td.makeUnitVector();
+				
+				Ray T = Ray(rec.p, Td);
 
 				iTransmit += traceRay(T, depth-1);
 			}
 		}
-
-		// NOTE: env' depends on entering-flag
-		//  May want to use a stack to push old env for later use
 		
 		// Return (I[local] + ks * I[reflect] + kt * I[transmit]) * material_color
 		return 	  (iLocal * rec.material->texture->value(rec.uv, rec.texp))

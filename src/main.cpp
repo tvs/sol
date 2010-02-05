@@ -36,7 +36,7 @@ int main() {
 	// Correct values
 	Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0, 0) );
 	// Attenuation testing
-	// Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0.02, 0.00003) );
+	// Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0.02, 0) );
 	
 	scene.addLight(new Light(Vector3D(10, 0, 10), RGB(1, 1, 1)) );
 	// scene.addLight(new Light(Vector3D(-10, 0, 10), RGB(1, 1, 1)) );

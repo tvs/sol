@@ -7,9 +7,13 @@ bool Plane::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const {
 	float denom = dot(r.direction(), N);
 	
 	// Check for the ray being parallel
-	if (denom < PARALLEL_EPS && denom > PARALLEL_EPS) return false;
+	if (denom < PARALLEL_EPS && denom > -PARALLEL_EPS) return false;
 	
-	float t = dot(N, P-r.origin())/denom;
+	// float D = dot(N, -P);
+	
+	float t = (dot(N, P - r.origin()) )/denom;
+	// float tt = (dot(N, r.origin()) + D)/denom;
+	// float t = (-D - dot(r.origin(), N))/denom;
 	
 	if (t >= tmin && t <= tmax) {
 		record.p = record.texp = r.pointAtParameter(t);
