@@ -1,0 +1,92 @@
+(defconstant *num-gradients* 12)
+
+(defconstant *gradients*
+  (vector #(1 1 0) #(-1 1 0) #(1 -1 0) #(-1 -1 0)
+          #(1 0 1) #(-1 0 1) #(1 0 -1) #(-1 0 -1)
+          #(0 1 1) #(0 -1 1) #(0 1 -1) #(0 -1 -1)) )
+
+(defconstant *num-permutes* 256)
+
+(let ((permutations (make-array *num-permutes*)))
+  (dotimes (n *num-permutes*)
+    (setf (svref permutations n) n) )
+  (dotimes (n *num-permutes*)
+    (let ((tmp (svref permutations n))
+          (k (random *num-permutes*)) )
+      (setf (svref permutations n) (svref permutations k))
+      (setf (svref permutations k) tmp) ) )
+  (defun phi (i)
+    (svref permutations (mod i *num-permutes*)) ) )
+
+(defun random-gradient (i j k)
+  (svref *gradients* 
+         (mod (phi (+ i (phi (+ j (phi k)))))
+              *num-gradients*) ) )
+
+(defun weight (x)
+  (let* ((xx (* x x)) (xxx (abs (* x xx))))
+    (+ (* -6 xx xxx) (* 15 xx xx) (* -10 xxx) 1) ) )
+
+(defun omega (i j k u v w)
+  (let ((g (random-gradient i j k)))
+    (* (weight u) (weight v) (weight w)
+       (+ (* (svref g 0) u)
+          (* (svref g 1) v)
+          (* (svref g 2) w) ) ) ) )
+
+(defun noise (x y z)
+  (let* ((i (floor x)) (j (floor y)) (k (floor z))
+         (u (- x i)) (v (- y j)) (w (- z k)) )
+    (+ (omega i j k u v w)
+       (omega i j (+ k 1) u v (- w 1))
+       (omega i (+ j 1) k u (- v 1) w)
+       (omega i (+ j 1) (+ k 1) u (- v 1) (- w 1))
+       (omega (+ i 1) j k (- u 1) v w)
+       (omega (+ i 1) j (+ k 1) (- u 1) v (- w 1))
+       (omega (+ i 1) (+ j 1) k (- u 1) (- v 1) w)
+       (omega (+ i 1) (+ j 1) (+ k 1) (- u 1) (- v 1) (- w 1)) ) ) )
+
+(defun phi-map (x y z)
+  (let ((i (floor x)) (j (floor y)) (k (floor z)))
+    (mod (phi (+ i (phi (+ j (phi k)))))
+         *num-gradients*) ) )
+
+(defun make-image (func &optional (rows 512) (cols 512) 
+                  (x0 0) (y0 0) (x1 10) (y1 10) (z 0))
+  (let ((image (make-array (list rows cols)
+                           :element-type 'float))
+        (dx (/ (- x1 x0) cols)) (dy (/ (- y1 y0) rows)) )
+    (dotimes (r rows)
+      (let ((y (+ y0 (* r dy))))
+        (dotimes (c cols)
+          (let ((x (+ x0 (* c dx))))
+            (setf (aref image r c) (funcall func x y z)) ) ) ) )
+    image) )
+
+(defun write-image (fname image)
+  (let* ((min (aref image 0 0))
+         (max min) )
+    (dotimes (r (array-dimension image 0))
+      (dotimes (c (array-dimension image 1))
+        (let ((v (aref image r c)))
+          (when (< v min) (setf min v))
+          (when (> v max) (setf max v)) ) ) )
+    (let* ((scale (/ 255.0 (- max min)))
+           (shift (* (- scale) min)) )
+      (with-open-file (str fname :direction :output
+                           :if-exists :supersede)
+         (format str "P2~%")
+         (format str "# ~F ~F ~F ~F~%" min max scale shift)
+         (format str "~A ~A~%" 
+                 (array-dimension image 1)
+                 (array-dimension image 0) )
+         (format str "255~%")
+         (dotimes (r (array-dimension image 0))
+           (dotimes (c (array-dimension image 1))
+             (let ((pix (round (+ (* scale (aref image r c))
+                                  shift))))
+               (format str "~A ~%" pix) ) )
+           (format str "~%") ) ) ) ) )
+        
+   
+        

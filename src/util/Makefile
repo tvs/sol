@@ -1,5 +1,5 @@
 # UTIL
-OBJS=onb.o matrix.o
+OBJS=onb.o matrix.o noise.o
 OUT_OBJS=$(addprefix $(BUILDDIR)/,$(OBJS))
 THISDIR=$(shell pwd)
 
@@ -12,5 +12,6 @@ $(BUILDDIR)/%.o: $(THISDIR)/%.cpp
 
 $(BUILDDIR)/onb.o: onb.h onb.cpp
 $(BUILDDIR)/matrix.o: matrix.h matrix.cpp
+$(BUILDDIR)/noise.o: noise.h noise.cpp
 
 .PHONY: all build
