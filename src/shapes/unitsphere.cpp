@@ -4,6 +4,9 @@ UnitSphere::UnitSphere(Material* _mat) : material(_mat) {}
     
 bool UnitSphere::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const
 {
+	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
+		return false;
+		
     double a = dot(r.direction(), r.direction());
     double b = 2*dot(r.direction(), r.origin());
     double c = dot(r.origin(), r.origin()) - 1;
@@ -42,6 +45,9 @@ bool UnitSphere::hit(const Ray& r, float tmin, float tmax, HitRecord& record) co
 }
 
 bool UnitSphere::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const {
+	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
+		return false;
+	
 	mat = material;
     double a = dot(r.direction(), r.direction());
     double b = 2*dot(r.direction(), r.origin());
@@ -64,4 +70,9 @@ bool UnitSphere::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat)
         return true;
     }
     return false;
+}
+
+BBox UnitSphere::boundingBox(float, float) const {
+	return BBox(-Vector3D(1, 1, 1),
+				 Vector3D(1, 1, 1));
 }

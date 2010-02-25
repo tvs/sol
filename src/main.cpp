@@ -15,6 +15,7 @@
 #include "simpletexture.h"
 #include "noisetexture.h"
 #include "marbletexture.h"
+#include "shapes/beztrianglemesh.h"
 
 using namespace std;
 
@@ -22,7 +23,8 @@ using namespace std;
 
 // Comment in and out in order to determine what is drawn
 // #define BALLS
-#define MARBLE
+// #define MARBLE
+#define TRIMESH_TEST
 
 int main() {
 #ifdef BALLS
@@ -194,6 +196,39 @@ int main() {
 	Image im = scene.createImage(512, 512);
 
     im.writePPM(cout); 
+	}
+#elif defined(TRIMESH_TEST)
+	{
+	Camera cam = Camera(Vector3D(0, -3, 3),
+						Vector3D(0, 0, 0),
+			    		Vector3D(0, 0, 1),
+			    		80.0f, 1);	
+			
+	Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0, 0) );
+	
+	scene.addLight(new Light(Vector3D(10, 10, 10), RGB(1, 1, 1)) );
+	
+	vector<Vector3D> vec;
+	vec.push_back(Vector3D(-1, 1, 0)); vec.push_back(Vector3D(1, 1, 0));
+	vec.push_back(Vector3D(-1, -1, 0));  vec.push_back(Vector3D(1, -1, 0));
+	
+	BezTriangleMesh *bz = new BezTriangleMesh(vec, 2, 
+							new Material(0.15, 0.656667, 0.2, 10, 0.0, 1.52,
+								// new SimpleTexture(RGB(0.9, 0.8, 0.1)) ) );
+								new MarbleTexture(
+									RGB(0.8, 0.0, 0.7), // p0
+									RGB(0.4, 0.0, 0.3), // m1
+									RGB(0.9, 0.0, 0.8), // m0
+									RGB(0.2, 0.0, 0.1), // m1
+									Vector3D(0.2, 0.4, 1),
+									0.3f,
+									1, 3)) );
+								
+	scene.addShape(bz);
+	
+	Image im = scene.createImage(512, 512);
+
+    im.writePPM(cout);
 	}
 #endif
 }

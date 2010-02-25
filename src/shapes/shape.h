@@ -7,6 +7,7 @@
 #include "util/hitrecord.h"
 #include "ray.h"
 #include "material.h"
+#include "bbox.h"
 
 class Shape {
 public:
@@ -14,6 +15,7 @@ public:
 	
     virtual bool hit(const Ray& r, float tmin, float tmax, HitRecord& record) const = 0;
     virtual bool shadowHit(const Ray &r, float tmin, float tmax, Material*& mat) const = 0;
+	virtual BBox boundingBox(float time0, float time1) const = 0;
 };
 
 #endif // _SHAPE_H_

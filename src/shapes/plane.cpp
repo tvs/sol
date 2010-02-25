@@ -43,3 +43,8 @@ bool Plane::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) cons
 	}
 	return false;
 }
+
+// Note: Planes are infinite, so the bounding box should never even be used
+BBox Plane::boundingBox(float time0, float time1) const { 
+	return BBox(Vector3D(0, 0, 0), Vector3D(0, 0 ,0)); 
+}

@@ -11,6 +11,9 @@ Triangle::Triangle(const Vector3D& _p0, const Vector3D& _p1, const Vector3D& _p2
         
 bool Triangle::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const
 {
+	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
+		return false;
+	
     float tval;
     float A = p0.x() - p1.x();
     float B = p0.y() - p1.y();
@@ -68,6 +71,9 @@ bool Triangle::hit(const Ray& r, float tmin, float tmax, HitRecord& record) cons
 }
 
 bool Triangle::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const {
+	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
+		return false;
+	
 	mat = material;
     float tval;
     float A = p0.x() - p1.x();
@@ -107,4 +113,35 @@ bool Triangle::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) c
     tval = -(F*AKJB + E*JCAL + D*BLKC) / denom;
     
     return (tval >= tmin && tval <= tmax);
+}
+
+BBox Triangle::boundingBox(float time0, float time1) const {
+	const float epsilon = 0.00001f;
+   	Vector3D min;
+   	Vector3D max;
+
+   	min.setX(p0.x() < p1.x() ? p0.x() : p1.x());
+   	min.setY(p0.y() < p1.y() ? p0.y() : p1.y());
+  	min.setZ(p0.z() < p1.z() ? p0.z() : p1.z());
+
+   	min.setX(p2.x() < min.x() ? p2.x() : min.x());
+   	min.setY(p2.y() < min.y() ? p2.y() : min.y());
+   	min.setZ(p2.z() < min.z() ? p2.z() : min.z());
+
+   	max.setX(p0.x() > p1.x() ? p0.x() : p1.x());
+   	max.setY(p0.y() > p1.y() ? p0.y() : p1.y());
+   	max.setZ(p0.z() > p1.z() ? p0.z() : p1.z());
+
+   	max.setX(p2.x() > max.x() ? p2.x() : max.x());
+   	max.setY(p2.y() > max.y() ? p2.y() : max.y());
+   	max.setZ(p2.z() > max.z() ? p2.z() : max.z());
+
+   	min.setX(min.x() - epsilon);
+   	min.setY(min.y() - epsilon);
+   	min.setZ(min.z() - epsilon);
+
+   	max.setX(max.x() + epsilon);
+   	max.setY(max.y() + epsilon);
+   	max.setZ(max.z() + epsilon);
+   	return BBox(min, max);
 }

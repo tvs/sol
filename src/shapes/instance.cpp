@@ -36,3 +36,8 @@ bool Instance::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) c
 	
 	return prim->shadowHit(tray, tmin, tmax, mat);
 }
+
+// Note: Shouldn't be used, really. Let the bounding box check occur in the primitive
+BBox Instance::boundingBox(float time0, float time1) const  {
+	return prim->boundingBox(time0, time1);
+}

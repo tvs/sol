@@ -1,6 +1,6 @@
 # SRC DIR
 SUBLIST=color image shapes util
-OBJS=scene.o simpletexture.o noisetexture.o marbletexture.o main.o 
+OBJS=scene.o bvh.o simpletexture.o noisetexture.o marbletexture.o main.o 
 OUT_OBJS=$(addprefix $(BUILDDIR)/,$(OBJS))
 THISDIR=$(shell pwd)
 
@@ -18,6 +18,7 @@ $(BUILDDIR)/%.o: $(THISDIR)/%.cpp
 
 $(BUILDDIR)/main.o: main.cpp
 $(BUILDDIR)/scene.o: scene.h scene.cpp
+$(BUILDDIR)/bvh.o: bvh.h bvh.cpp
 $(BUILDDIR)/simpletexture.o: simpletexture.h simpletexture.cpp
 $(BUILDDIR)/noisetexture.o: noisetexture.h noisetexture.cpp
 $(BUILDDIR)/marbletexture.o: marbletexture.h marbletexture.cpp
