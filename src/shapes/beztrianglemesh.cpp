@@ -58,7 +58,7 @@ bool BezTriangleMesh::shadowHit(const Ray& r, float tmin, float tmax, Material*&
 	
 	int height = verts.size()/width;
 	
-	for (int j = 0; j <= height - 1; j++) {
+	for (int j = 0; j < height - 1; j++) {
 		for (int i = 0; i < width - 1; i++) {
 			int index = i + (width * j);
 			

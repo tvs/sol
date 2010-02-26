@@ -16,6 +16,7 @@
 #include "noisetexture.h"
 #include "marbletexture.h"
 #include "shapes/beztrianglemesh.h"
+#include "shapes/bezierpatch.h"
 
 using namespace std;
 
@@ -24,7 +25,8 @@ using namespace std;
 // Comment in and out in order to determine what is drawn
 // #define BALLS
 // #define MARBLE
-#define TRIMESH_TEST
+// #define TRIMESH_TEST
+#define BEZ_PATCH_TEST
 
 int main() {
 #ifdef BALLS
@@ -229,6 +231,49 @@ int main() {
 	Image im = scene.createImage(512, 512);
 
     im.writePPM(cout);
+	}
+#elif defined(BEZ_PATCH_TEST)
+	{
+	Camera cam = Camera(Vector3D(8, 7, 6),
+						Vector3D(0, 0, 0),
+			    		Vector3D(0, 0, 1),
+			    		40.0f, 1);	
+
+	Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0, 0) );
+
+	scene.addLight(new Light(Vector3D(10, 10, 10), RGB(1, 1, 1)) );	
+	
+	Vector3D points[4][4];
+	points[0][0] = Vector3D(-3, -3, 4); points[0][1] = Vector3D(-1, -3, 0);
+	points[0][2] = Vector3D(1, -3, 0);  points[0][3] = Vector3D(3, -3, -2);
+	
+	points[1][0] = Vector3D(-3, -1, 0); points[1][1] = Vector3D(-1, -1, 3);
+	points[1][2] = Vector3D(1, -1, 0);  points[1][3] = Vector3D(3, -1, 0);
+	
+	points[2][0] = Vector3D(-3, 1, 0); points[2][1] = Vector3D(-1, 1, 0); 
+	points[2][2] = Vector3D(1, 1, 0);  points[2][3] = Vector3D(3, 1, 1);
+
+	points[3][0] = Vector3D(-3, 3, 2); points[3][1] = Vector3D(-1, 3, 1);
+	points[3][2] = Vector3D(1, 3, 0);  points[3][3] = Vector3D(3, 3, -1);
+				
+	
+	BezierPatch *bz = new BezierPatch(&points, 4, 64, 64,
+							new Material(0.15, 0.656667, 0.2, 10, 0.0, 1.52,
+								new SimpleTexture(RGB(0.9, 0.8, 0.1)) ) );
+								
+	Plane *plane = new Plane( Vector3D(0, 0, 1),
+				  			  Vector3D(0, 0, -6),
+						  		new Material(0.0, 0.3, 0.7, 100, 0.0, 1.52,
+									new SimpleTexture(RGB(0.9, 0.8, 0.7))) );
+	
+								
+	scene.addShape(bz);
+	scene.addShape(plane);
+
+	Image im = scene.createImage(512, 512);
+
+    im.writePPM(cout);
+	
 	}
 #endif
 }
