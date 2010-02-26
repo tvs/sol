@@ -41,7 +41,7 @@ public:
        posneg[4] =  (data[1].z() > 0 ? 0 : 1);
        posneg[5] = posneg[4] ^ 1;  
     }
-    Vector3D pointAtParameter(float t) const { return data[0] + t*data[1]; }
+    Vector3D pointAtParameter(double t) const { return data[0] + t*data[1]; }
 
     Vector3D data[3];
     int posneg[6]; 

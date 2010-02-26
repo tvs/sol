@@ -28,7 +28,7 @@ public:
     Image(int width, int height, RGB background);
     
     bool set(int x, int y, const RGB& color);
-    void gammaCorrect(float gamma);
+    void gammaCorrect(double gamma);
     
     void writePPM(ostream& out);
     void readPPM(string file_name);

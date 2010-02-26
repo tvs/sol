@@ -35,9 +35,9 @@ public:
 	
 	// Recursive routine -- returns the color at the nearest intersection or the bgcolor
 	// Also calculates shadows, etc. blah blah
-	RGB traceRay(const Ray& r, float depth);
+	RGB traceRay(const Ray& r, double depth);
 	
-	float calculateAttenuation(const Vector3D& lightdir);
+	double calculateAttenuation(const Vector3D& lightdir);
 };
 
 #endif

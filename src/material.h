@@ -9,20 +9,20 @@ class HitRecord;
 
 class Material {
 public:
-	float KA; // Ambient reflection
-	float KD; // Diffuse reflection
-	float KS; // Specular reflection
-	float alpha; // Shininess coefficient
-	float KT; 	// Transmission coefficient
-	float KR; 	// Refraction coefficient
+	double KA; // Ambient reflection
+	double KD; // Diffuse reflection
+	double KS; // Specular reflection
+	double alpha; // Shininess coefficient
+	double KT; 	// Transmission coefficient
+	double KR; 	// Refraction coefficient
 	
 	Texture *texture;
 	
-	Material(float _ka, float _kd, float _ks,
-	 		 float _alpha, float _kt, float _kr, Texture *_tex)
+	Material(double _ka, double _kd, double _ks,
+	 		 double _alpha, double _kt, double _kr, Texture *_tex)
 		: KA(_ka), KD(_kd), KS(_ks), alpha(_alpha), KT(_kt), KR(_kr), texture(_tex) {}
 		
-	Material(float _ka, float _kd, float _ks, float _alpha, Texture *_tex)
+	Material(double _ka, double _kd, double _ks, double _alpha, Texture *_tex)
 		: KA(_ka), KD(_kd), KS(_ks), alpha(_alpha), texture(_tex)
 	{
 		KT = 0.0f;

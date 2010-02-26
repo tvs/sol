@@ -9,10 +9,10 @@
 class NoiseTexture : public Texture
 {
 public:
-	float scale;
+	double scale;
 	RGB c0, c1;
 	
-	NoiseTexture(float _scale = 1.0f)	
+	NoiseTexture(double _scale = 1.0f)	
 	{
 		scale = _scale;
 		c0 = RGB(0.8, 0.0, 0.0);

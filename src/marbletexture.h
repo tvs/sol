@@ -11,12 +11,12 @@
 class MarbleTexture : public Texture
 {
 public:
-	float freq, scale;
+	double freq, scale;
 	int octaves;
 	RGB p0, p1, m0, m1;
 	Vector3D dir;
 	
-	MarbleTexture(float stripes_per_unit, float _scale = 5.0f, int _octaves = 8)
+	MarbleTexture(double stripes_per_unit, double _scale = 5.0f, int _octaves = 8)
 	{
 		freq = M_PI * stripes_per_unit;
 		scale = _scale;
@@ -31,7 +31,7 @@ public:
 	
 	MarbleTexture(const RGB & _p0, const RGB & _p1, const RGB & _m0, const RGB & _m1,
 				  const Vector3D & _dir,
-				  float stripes_per_unit, float _scale = 5.0f, int _octaves = 8)
+				  double stripes_per_unit, double _scale = 5.0f, int _octaves = 8)
 		: p0(_p0), p1(_p1), m0(_m0), m1(_m1), dir(_dir)
 	{
 		freq = M_PI * stripes_per_unit;

@@ -11,19 +11,19 @@ public:
       seed      = _seed;
       mult      = 62089911ULL;
       llong_max = 4294967295ULL;
-      float_max = 4294967295.0f;
+      double_max = 4294967295.0f;
    }
-   float operator()();               
+   double operator()();               
 
    unsigned long long seed;
    unsigned long long mult;
    unsigned long long llong_max;
-   float float_max;
+   double double_max;
 };
 
-inline float RNG::operator()()
+inline double RNG::operator()()
 {
    seed = mult * seed;
-   return float(seed % llong_max) / float_max;  
+   return double(seed % llong_max) / double_max;  
 }
 #endif // _RNG_H_

@@ -32,7 +32,7 @@ Matrix& Matrix::operator-= (const Matrix & right_op)
    return *this;
 } 
 
-Matrix& Matrix::operator*= (float right_op)
+Matrix& Matrix::operator*= (double right_op)
 {  
    for (int i = 0; i < 4; i++)
       for (int j = 0; j < 4; j++)
@@ -47,7 +47,7 @@ Matrix& Matrix::operator*= (const Matrix & right_op)
    for (int i = 0; i < 4; i++)
       for (int j = 0; j < 4; j++)
       {
-	 float sum = 0;
+	 double sum = 0;
 	 for (int k = 0; k < 4; k++)
 	    sum += ret.x[i][k] * right_op.x[k][j];
 	 x[i][j] = sum;
@@ -57,7 +57,7 @@ Matrix& Matrix::operator*= (const Matrix & right_op)
 
 void Matrix::invert()
 {
-   float det = determinant();
+   double det = determinant();
    Matrix inverse;
    inverse.x[0][0]  = det3(x[1][1], x[1][2], x[1][3],
                            x[2][1], x[2][2], x[2][3],
@@ -128,7 +128,7 @@ void Matrix::transpose()
    for (int i = 0; i < 4; i++)
       for (int j = 0; j < 4; j++)
       {
-	 float temp = x[i][j];
+	 double temp = x[i][j];
 	 x[i][j] = x[j][i];
 	 x[j][i] = temp;
       }
@@ -191,7 +191,7 @@ Matrix identityMatrix()
    return ret;
 }
    
-Matrix translate (float _x, float _y, float _z)
+Matrix translate (double _x, double _y, double _z)
 {
    Matrix ret = identityMatrix();
    
@@ -203,12 +203,12 @@ Matrix translate (float _x, float _y, float _z)
 }
 
 // angle is in radians
-Matrix rotateX (float angle)
+Matrix rotateX (double angle)
 {
    Matrix ret = identityMatrix();
 
-   float cosine = cos(angle);
-   float sine   = sin(angle);
+   double cosine = cos(angle);
+   double sine   = sin(angle);
 
    ret.x[1][1] = cosine;
    ret.x[1][2] =  -sine;
@@ -219,12 +219,12 @@ Matrix rotateX (float angle)
 }
 
 // angle is in radians
-Matrix rotateY (float angle)
+Matrix rotateY (double angle)
 {  
    Matrix ret = identityMatrix();
 
-   float cosine = cos(angle);
-   float sine   = sin(angle);
+   double cosine = cos(angle);
+   double sine   = sin(angle);
 
    ret.x[0][0] = cosine;
    ret.x[0][2] =   sine;
@@ -235,12 +235,12 @@ Matrix rotateY (float angle)
 }
    
 // angle is in radians
-Matrix rotateZ (float angle)
+Matrix rotateZ (double angle)
 {  
    Matrix ret = identityMatrix();
 
-   float cosine = cos(angle);
-   float sine   = sin(angle);
+   double cosine = cos(angle);
+   double sine   = sin(angle);
 
    ret.x[0][0] = cosine;
    ret.x[0][1] =  -sine;
@@ -252,16 +252,16 @@ Matrix rotateZ (float angle)
 
 // rotation is in radians about an arbitrary axis
 Matrix
-rotate(const Vector3D& axis, float angle)
+rotate(const Vector3D& axis, double angle)
 {
    Vector3D _axis = unitVector(axis);
    Matrix ret;
-   float x = _axis.x();
-   float y = _axis.y();
-   float z = _axis.z();
-   float cosine = cos(angle);
-   float sine = sin(angle);
-   float t   = 1 - cosine;   
+   double x = _axis.x();
+   double y = _axis.y();
+   double z = _axis.z();
+   double cosine = cos(angle);
+   double sine = sin(angle);
+   double t   = 1 - cosine;   
 
    ret.x[0][0] = t * x * x + cosine;
    ret.x[0][1] = t * x * y - sine * y;
@@ -286,7 +286,7 @@ rotate(const Vector3D& axis, float angle)
    return ret;
 }
 
-Matrix scale(float _x, float _y, float _z)
+Matrix scale(double _x, double _y, double _z)
 {
    Matrix ret = zeroMatrix();
 
@@ -352,7 +352,7 @@ Matrix operator- (const Matrix & left_op, const Matrix & right_op)
    return ret;
 }
 
-Matrix operator* (const Matrix & left_op, float right_op)
+Matrix operator* (const Matrix & left_op, double right_op)
 {
    Matrix ret;
 
@@ -370,7 +370,7 @@ Matrix operator* (const Matrix & left_op, const Matrix & right_op)
    for (int i = 0; i < 4; i++)
       for (int j = 0; j < 4; j++)
       {
-	 float subt = 0.0;
+	 double subt = 0.0;
 	 for (int k = 0; k < 4; k++)
 	    subt += left_op.x[i][k] * right_op.x[k][j];
 	 ret.x[i][j] = subt;
@@ -383,7 +383,7 @@ Matrix operator* (const Matrix & left_op, const Matrix & right_op)
 Vector3D operator* (const Matrix & left_op, const Vector3D& right_op)
 {
    Vector3D ret;
-   float temp;
+   double temp;
 
    ret[0] = right_op[0] * left_op.x[0][0] + right_op[1] * left_op.x[0][1] + 
               right_op[2] * left_op.x[0][2] +               left_op.x[0][3];
@@ -409,9 +409,9 @@ ostream & operator<< (ostream & out, const Matrix & right_op)
    return out;
 }
 
-float Matrix::determinant()
+double Matrix::determinant()
 {
-   float det;
+   double det;
    det  = x[0][0] * det3(x[1][1], x[1][2], x[1][3], 
                          x[2][1], x[2][2], x[2][3], 
                          x[3][1], x[3][2], x[3][3]);

@@ -26,10 +26,10 @@ Image Scene::createImage(int H, int W) {
 	return im;
 }
 
-RGB Scene::traceRay(const Ray& r, float depth) {
+RGB Scene::traceRay(const Ray& r, double depth) {
 	HitRecord rec;
 	Material *shadowMat;
-	float tmax = MAX_INTERSECTION_DISTANCE;
+	double tmax = MAX_INTERSECTION_DISTANCE;
 	bool is_a_hit = false;
 	
 	for (unsigned int k = 0; k < shapes.size(); k++) {
@@ -67,9 +67,9 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 		RGB iTransmit = RGB(0, 0, 0);
 		
 		// Ambient is included even if occluded?
-		float Ri = rec.material->KA * ambient.r();
-		float Gi = rec.material->KA * ambient.g();
-		float Bi = rec.material->KA * ambient.b();
+		double Ri = rec.material->KA * ambient.r();
+		double Gi = rec.material->KA * ambient.g();
+		double Bi = rec.material->KA * ambient.b();
 		
 		// Local illumination
 		for (unsigned int j = 0; j < lights.size(); j++) {
@@ -79,8 +79,8 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 			bool occluded = false;
 			
 			// Shadow feeler ray
-			float shadowFilter = 1.0;
-			float tmax2 = MAX_INTERSECTION_DISTANCE;
+			double shadowFilter = 1.0;
+			double tmax2 = MAX_INTERSECTION_DISTANCE;
 			for (unsigned int m = 0; m < shapes.size(); m++) {
 				if (shapes[m]->shadowHit(Ray(rec.p, inc), MIN_INTERSECTION_DISTANCE, 
 										tmax2, shadowMat))
@@ -99,18 +99,18 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 				Vector3D ref = reflect(inc, N);
 				ref.makeUnitVector();
 				
-				float spec = dot(ref, v);
-				float nspec = 0;
+				double spec = dot(ref, v);
+				double nspec = 0;
 				if (spec > 0) {
 					nspec = pow(spec, rec.material->alpha);
 				}
 							
-				float diffuse = rec.material->KD * dot(inc, N);
-				float specular = rec.material->KS * nspec;
+				double diffuse = rec.material->KD * dot(inc, N);
+				double specular = rec.material->KS * nspec;
 			
-				float att = calculateAttenuation(rec.p - light->pos);
+				double att = calculateAttenuation(rec.p - light->pos);
 				
-				float mult = shadowFilter*att;
+				double mult = shadowFilter*att;
 			
 				// (5) Compute I[local] using local illum model (Phong model)
 				// TODO: Refactor so lighting model can be "dropped in"
@@ -142,15 +142,15 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 		// 			I[transmit] <- traceRay(T, depth-1, env')
 		// TODO: add env variable for material stack
 		if (rec.material->isTransmissive()) {
-			float n1 = rec.material->KR;
-			float n2 = AIR_REFRACTION;
-			float n = (entering ? (n2/n1) : (n1/n2));
+			double n1 = rec.material->KR;
+			double n2 = AIR_REFRACTION;
+			double n = (entering ? (n2/n1) : (n1/n2));
 			
-			float c1 = -dot(N, v);
-			float check = 1 - (n*n) * (1 - (c1 * c1));
+			double c1 = -dot(N, v);
+			double check = 1 - (n*n) * (1 - (c1 * c1));
 
 			if (check > 0) {
-				float c2 = sqrtf(check);
+				double c2 = sqrtf(check);
 			
 				Vector3D Td = (n * v) + (n * c1 - c2) * N;
 				// Td.makeUnitVector();
@@ -171,7 +171,7 @@ RGB Scene::traceRay(const Ray& r, float depth) {
 	
 }
 
-float Scene::calculateAttenuation(const Vector3D& lightdir) {
-	float d =  lightdir.length();
+double Scene::calculateAttenuation(const Vector3D& lightdir) {
+	double d =  lightdir.length();
 	return 1.0/(attenuation.x() + attenuation.y()*d + attenuation.z()*d*d);
 }

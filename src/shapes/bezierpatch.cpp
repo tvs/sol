@@ -6,8 +6,8 @@ BezierPatch::BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, 
 	// Find a better way to automatically determine partitioning from u and v detail
 	int parts = pow(2.0, partitions);
 	
-	float du = 1.0/u_detail;
-	float dv = 1.0/v_detail;
+	double du = 1.0/u_detail;
+	double dv = 1.0/v_detail;
 	
 	u_detail /= parts;
 	v_detail /= parts;
@@ -62,23 +62,23 @@ BezierPatch::BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, 
 	bvh = new BVH(meshes);
 }
 
-bool BezierPatch::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const {
+bool BezierPatch::hit(const Ray& r, double tmin, double tmax, HitRecord& record) const {
 	return bvh->hit(r, tmin, tmax, record);
 }
 
-bool BezierPatch::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const {
+bool BezierPatch::shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const {
 	return bvh->shadowHit(r, tmin, tmax, mat);
 }
 
-BBox BezierPatch::boundingBox(float time0, float time1) const {
+BBox BezierPatch::boundingBox(double time0, double time1) const {
 	return bvh->boundingBox(time0, time1);
 }
 
-Vector3D lerp(float t, Vector3D& A, Vector3D & B) {
+Vector3D lerp(double t, Vector3D& A, Vector3D & B) {
 	return A*(1-t) + B*t;
 }
 
-Vector3D deCasteljau(float t, Vector3D (*P)[4]) {
+Vector3D deCasteljau(double t, Vector3D (*P)[4]) {
 	Vector3D P01 = lerp(t, (*P)[0], (*P)[1]);
 	Vector3D P12 = lerp(t, (*P)[1], (*P)[2]);
 	Vector3D P23 = lerp(t, (*P)[2], (*P)[3]);
@@ -87,7 +87,7 @@ Vector3D deCasteljau(float t, Vector3D (*P)[4]) {
 	return lerp(t, P012, P123);
 }
 
-Vector3D eval(float u, float v, Vector3D (*P)[4][4]) {
+Vector3D eval(double u, double v, Vector3D (*P)[4][4]) {
 	Vector3D Q[4];
 	for (int j = 0; j <= 3; j++)
 	  Q[j] = deCasteljau(u, &(*P)[j]);

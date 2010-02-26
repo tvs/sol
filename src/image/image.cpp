@@ -34,9 +34,9 @@ bool Image::set(int x, int y, const RGB& color) {
     return true;
 }
 
-void Image::gammaCorrect(float gamma) {
+void Image::gammaCorrect(double gamma) {
     RGB temp;
-    float power = 1.0/gamma;
+    double power = 1.0/gamma;
     for (int i = 0; i < nx; i++) 
         for (int j = 0; j < ny; j++) {
             temp = raster[i][j];
@@ -113,8 +113,8 @@ void Image::readPPM(string file_name) {
             in.get(red);
             in.get(green);
             in.get(blue);
-            raster[j][i] = RGB((float) ((unsigned char) red)/255.0,
-                               (float) ((unsigned char) green)/255.0,
-                               (float) ((unsigned char) blue)/255.0);
+            raster[j][i] = RGB((double) ((unsigned char) red)/255.0,
+                               (double) ((unsigned char) green)/255.0,
+                               (double) ((unsigned char) blue)/255.0);
         }
 }

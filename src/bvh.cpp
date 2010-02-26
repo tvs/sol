@@ -46,10 +46,10 @@ BVH::BVH(vector<Shape*>& shapesV)
 
 }
 
-BBox BVH::boundingBox( float time0, float time1 )const
+BBox BVH::boundingBox( double time0, double time1 )const
 { return bbox; }
 
-bool BVH::hit(const Ray& r, float tmin, float tmax, HitRecord& rec)const
+bool BVH::hit(const Ray& r, double tmin, double tmax, HitRecord& rec)const
 {
    if (!(bbox.rayIntersect(r, tmin, tmax))) return false; 
 
@@ -64,7 +64,7 @@ bool BVH::hit(const Ray& r, float tmin, float tmax, HitRecord& rec)const
    return (isahit1 || isahit2);
 }
 
-bool BVH::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const
+bool BVH::shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const
 {
    if (!(bbox.rayIntersect(r, tmin, tmax))) return false;
    

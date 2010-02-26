@@ -2,7 +2,7 @@
 
 UnitSphere::UnitSphere(Material* _mat) : material(_mat) {}
     
-bool UnitSphere::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const
+bool UnitSphere::hit(const Ray& r, double tmin, double tmax, HitRecord& record) const
 {
 	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
 		return false;
@@ -29,10 +29,10 @@ bool UnitSphere::hit(const Ray& r, float tmin, float tmax, HitRecord& record) co
         record.t = t;
 
 		Vector3D n = record.p;
-		float pi = 3.14159265359f;
-		float theta = acos(0.9999f * n.z() );
-		float sinTheta = sin(theta);
-		float phi = acos (n.x() / (1.0001f * sinTheta) );
+		double pi = 3.14159265359f;
+		double theta = acos(0.9999f * n.z() );
+		double sinTheta = sin(theta);
+		double phi = acos (n.x() / (1.0001f * sinTheta) );
 		
 		if (n.y() < 0.0f) phi = 2*pi - phi;
 		
@@ -44,7 +44,7 @@ bool UnitSphere::hit(const Ray& r, float tmin, float tmax, HitRecord& record) co
     return false;
 }
 
-bool UnitSphere::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const {
+bool UnitSphere::shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const {
 	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
 		return false;
 	
@@ -72,7 +72,7 @@ bool UnitSphere::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat)
     return false;
 }
 
-BBox UnitSphere::boundingBox(float, float) const {
+BBox UnitSphere::boundingBox(double, double) const {
 	return BBox(-Vector3D(1, 1, 1),
 				 Vector3D(1, 1, 1));
 }

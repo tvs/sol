@@ -9,7 +9,7 @@ class Material;
 
 class HitRecord {
 public:
-    float t;
+    double t;
 	Vector3D p;
 	Vector3D texp;
 	ONB uvw;

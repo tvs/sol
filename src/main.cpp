@@ -31,12 +31,12 @@ using namespace std;
 int main() {
 #ifdef BALLS
 	{
-	float KA = 0.1f;
-	float KD = 0.7f;
-	float KS = 0.2f;
-	float KT = 0.0f;
-	float NI = 1.52f;
-	float PHONG = 10.0f;
+	double KA = 0.1f;
+	double KD = 0.7f;
+	double KS = 0.2f;
+	double KT = 0.0f;
+	double NI = 1.52f;
+	double PHONG = 10.0f;
 	
 	Camera cam = Camera(Vector3D(2.5*R, -2.5*R, 3.5*R),
 						Vector3D(0, 0, 1.5*R),
@@ -108,12 +108,12 @@ int main() {
 	}    
 #elif defined(MARBLE) 
 	{
-	float KA = 0.1f;
-	float KD = 0.7f;
-	float KS = 0.2f;
-	float KT = 0.0f;
-	float NI = 1.52f;
-	float PHONG = 10.0f;
+	double KA = 0.1f;
+	double KD = 0.7f;
+	double KS = 0.2f;
+	double KT = 0.0f;
+	double NI = 1.52f;
+	double PHONG = 10.0f;
 	
 	Camera cam = Camera(Vector3D(2.5*R, -2.5*R, 3.5*R),
 						Vector3D(0, 0, 1.5*R),
@@ -257,7 +257,7 @@ int main() {
 	points[3][2] = Vector3D(1, 3, 0);  points[3][3] = Vector3D(3, 3, -1);
 				
 	
-	BezierPatch *bz = new BezierPatch(&points, 4, 64, 64,
+	BezierPatch *bz = new BezierPatch(&points, 7, 128, 128,
 							new Material(0.15, 0.656667, 0.2, 10, 0.0, 1.52,
 								new SimpleTexture(RGB(0.9, 0.8, 0.1)) ) );
 								

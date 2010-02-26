@@ -14,9 +14,9 @@ public:
 	Material *material;
 	
 	Plane(const Vector3D& _N, const Vector3D& _P, Material *_mat);
-	bool hit(const Ray& r, float tmin, float tmax, HitRecord& record) const;
-    bool shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const;
-	BBox boundingBox(float time0, float time1) const;
+	bool hit(const Ray& r, double tmin, double tmax, HitRecord& record) const;
+    bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+	BBox boundingBox(double time0, double time1) const;
 };
 
 #endif

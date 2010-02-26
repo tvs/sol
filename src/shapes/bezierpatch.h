@@ -16,13 +16,13 @@ public:
 	BVH *bvh;
 	
 	BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, int v_detail, Material* _mat);
-	bool hit(const Ray& r, float tmin, float tmax, HitRecord& record) const;
-    bool shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const;
-	BBox boundingBox(float time0, float time1) const;
+	bool hit(const Ray& r, double tmin, double tmax, HitRecord& record) const;
+    bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+	BBox boundingBox(double time0, double time1) const;
 };
 
-Vector3D lerp(float t, Vector3D& A, Vector3D & B);
-Vector3D deCasteljau(float t, Vector3D (*P)[4]);
-Vector3D eval(float u, float v, Vector3D (*P)[4][4]);
+Vector3D lerp(double t, Vector3D& A, Vector3D & B);
+Vector3D deCasteljau(double t, Vector3D (*P)[4]);
+Vector3D eval(double u, double v, Vector3D (*P)[4][4]);
 
 #endif

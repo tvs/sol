@@ -17,9 +17,9 @@ public:
    BVH(Shape* prim1, Shape* prim2);
    BVH(Shape* prim1, Shape* prim2, const BBox& _bbox);
    
-   bool hit(const Ray& r, float tmin, float tmax, HitRecord& rec) const;
-   bool shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const;
-   BBox boundingBox( float time0, float time1 ) const;
+   bool hit(const Ray& r, double tmin, double tmax, HitRecord& rec) const;
+   bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+   BBox boundingBox( double time0, double time1 ) const;
    Shape* buildBranch (Shape** surfaces, int num_surfaces, int axis = 0) const;
 };
 

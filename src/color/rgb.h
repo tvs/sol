@@ -23,56 +23,56 @@ using namespace std;
 
 class RGB {
 public:
-    float _r;
-    float _g;
-    float _b;
+    double _r;
+    double _g;
+    double _b;
     
     RGB() { _r = _g = _b = 0; }
-    RGB(float red, float green, float blue);
+    RGB(double red, double green, double blue);
     RGB(const RGB &original) { *this = original; }
     
-    void setRed(float red)      { _r = red; }
-    void setGreen(float green)  { _g = green; }
-    void setBlue(float blue)    { _b = blue; }
+    void setRed(double red)      { _r = red; }
+    void setGreen(double green)  { _g = green; }
+    void setBlue(double blue)    { _b = blue; }
     
     RGB& operator=(const RGB &right_op);
     RGB& operator+=(const RGB &right_op);
     RGB& operator*=(const RGB &right_op);
     RGB& operator/=(const RGB &right_op);
-    RGB& operator*=(float right_op);
-    RGB& operator/=(float right_op);
+    RGB& operator*=(double right_op);
+    RGB& operator/=(double right_op);
     
     RGB operator+()const { return *this; }
     RGB operator-()const { return RGB(-_r, -_g, -_b); }
     
-    float r() const { return _r; }
-    float g() const { return _g; }
-    float b() const { return _b; }
+    double r() const { return _r; }
+    double g() const { return _g; }
+    double b() const { return _b; }
     
     void clamp();
     
     // friend ostream& operator<<(ostream &out, const RGB &the_rgb);
-    friend RGB operator*(const RGB& c, float f);
-    friend RGB operator*(float f, const RGB& c);
-    friend RGB operator/(const RGB& c, float f);
+    friend RGB operator*(const RGB& c, double f);
+    friend RGB operator*(double f, const RGB& c);
+    friend RGB operator/(const RGB& c, double f);
     friend RGB operator*(const RGB& c1, const RGB& c2);
     friend RGB operator/(const RGB& c1, const RGB& c2);
     friend RGB operator+(const RGB& c1, const RGB& c2);
 };
 
-inline RGB::RGB(float red, float green, float blue) : _r(red), _g(green), _b(blue) {}
+inline RGB::RGB(double red, double green, double blue) : _r(red), _g(green), _b(blue) {}
 
 inline RGB& RGB::operator+=(const RGB & right_op) { 
     *this = *this + right_op; 
     return *this;
 }
 
-inline RGB& RGB::operator*=(float right_op) {
+inline RGB& RGB::operator*=(double right_op) {
     *this = *this * right_op;
     return *this;
 }
 
-inline RGB& RGB::operator/=(float right_op) {
+inline RGB& RGB::operator/=(double right_op) {
     *this = *this / right_op;
     return *this;
 }
@@ -110,11 +110,11 @@ inline void RGB::clamp() {
 //     return out;
 // }
 
-inline RGB operator*(const RGB& c, float f) { return RGB(c._r*f, c._g*f, c._b*f); }
+inline RGB operator*(const RGB& c, double f) { return RGB(c._r*f, c._g*f, c._b*f); }
 
-inline RGB operator*(float f, const RGB& c) { return RGB(c._r*f, c._g*f, c._b*f); }
+inline RGB operator*(double f, const RGB& c) { return RGB(c._r*f, c._g*f, c._b*f); }
 
-inline RGB operator/(float f, const RGB& c) { return RGB(c._r/f, c._g/f, c._b/f); }
+inline RGB operator/(double f, const RGB& c) { return RGB(c._r/f, c._g/f, c._b/f); }
 
 inline RGB operator*(const RGB& c1, const RGB& c2) { 
     return RGB(c1._r*c2._r, c1._g*c2._g, c1._b*c2._b);

@@ -7,7 +7,7 @@ Instance::Instance(Matrix trans, Shape* _prim)
 	: M(trans), N(trans), prim(_prim)
 	{ N.invert(); }
 	
-bool Instance::hit(const Ray& r, float tmin, float tmax, HitRecord& rec) const
+bool Instance::hit(const Ray& r, double tmin, double tmax, HitRecord& rec) const
 {
 	Vector3D no = transformLoc(N, r.origin());
 	Vector3D nd = transformVec(N, r.direction());
@@ -27,7 +27,7 @@ bool Instance::hit(const Ray& r, float tmin, float tmax, HitRecord& rec) const
 	return false;
 }
 
-bool Instance::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const
+bool Instance::shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const
 {
 	Vector3D no = transformLoc(N, r.origin());
 	Vector3D nd = transformVec(N, r.direction());
@@ -38,6 +38,6 @@ bool Instance::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) c
 }
 
 // Note: Shouldn't be used, really. Let the bounding box check occur in the primitive
-BBox Instance::boundingBox(float time0, float time1) const  {
+BBox Instance::boundingBox(double time0, double time1) const  {
 	return prim->boundingBox(time0, time1);
 }

@@ -4,7 +4,7 @@
 #include "shapes/shape.h"                
 #include "bbox.h"
                 
-int qsplit(Shape** list, int size, float pivot_val, int axis)
+int qsplit(Shape** list, int size, double pivot_val, int axis)
 {
    BBox bbox;
    double centroid;

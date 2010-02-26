@@ -24,9 +24,9 @@ public:
    	Triangle(const Vector3D& _p0, const Vector3D& _p1, const Vector3D& _p2,
             const Vector2D& _u0, const Vector2D& _u1, const Vector2D& _u2,   
             Material *_mat);
-	bool hit(const Ray& r, float tmin, float tmax, HitRecord &record) const;
-    bool shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const;
-	BBox boundingBox(float time0, float time1) const;
+	bool hit(const Ray& r, double tmin, double tmax, HitRecord &record) const;
+    bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+	BBox boundingBox(double time0, double time1) const;
 };
 
 #endif // _TRIANGLE_H_

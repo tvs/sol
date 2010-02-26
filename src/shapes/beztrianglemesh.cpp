@@ -19,7 +19,7 @@ BezTriangleMesh::BezTriangleMesh(const vector<Vector3D>& _verts, int _width, Mat
 	}		
 }
 	
-bool BezTriangleMesh::hit(const Ray& r, float tmin, float tmax, HitRecord& record) const
+bool BezTriangleMesh::hit(const Ray& r, double tmin, double tmax, HitRecord& record) const
 {
 	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
 		return false;
@@ -51,7 +51,7 @@ bool BezTriangleMesh::hit(const Ray& r, float tmin, float tmax, HitRecord& recor
 	return is_a_hit;	
 }
 
-bool BezTriangleMesh::shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const
+bool BezTriangleMesh::shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const
 {
 	if(!boundingBox(0, 0).rayIntersect(r, tmin, tmax))
 		return false;
@@ -80,7 +80,7 @@ bool BezTriangleMesh::shadowHit(const Ray& r, float tmin, float tmax, Material*&
 	return false;	
 }
 
-BBox BezTriangleMesh::boundingBox(float, float) const {
+BBox BezTriangleMesh::boundingBox(double, double) const {
 	return BBox(Vector3D(x_min, y_min, z_min), 
 				Vector3D(x_max, y_max, z_max));
 }

@@ -13,8 +13,8 @@ class Camera
 public:	
 	Vector3D e, p, u;
    	ONB uvw;
-	float fovy, a;
-	float h, w;
+	double fovy, a;
+	double h, w;
 	
    	Camera() {}
    	Camera(const Camera& orig)
@@ -29,7 +29,7 @@ public:
 		w = orig.w;
    	} 
    
-	Camera(Vector3D eye, Vector3D look_at, Vector3D up, float fov, float aspect) 
+	Camera(Vector3D eye, Vector3D look_at, Vector3D up, double fov, double aspect) 
       		: e(eye), p(look_at), u(up), fovy(fov), a(aspect)
    	{
 		Vector3D D = unitVector(p - e);
@@ -42,10 +42,10 @@ public:
 		w = h * a;
    	}
 
-   	Ray getRay(float xx, float yy, float W, float H) 
+   	Ray getRay(double xx, double yy, double W, double H) 
    	{
-		float x = (w/(W-1))*xx - (w/2.0);
-		float y = ((-h)/(H-1))*yy + (h/2.0);
+		double x = (w/(W-1))*xx - (w/2.0);
+		double y = ((-h)/(H-1))*yy + (h/2.0);
 	
 		Vector3D o = e;
 		Vector3D d = x*uvw.U + y*uvw.V + uvw.W;

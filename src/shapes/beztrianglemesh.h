@@ -20,14 +20,14 @@ public:
 	int width;
 	Material *material;
 	
-	float x_min, x_max;
-	float y_min, y_max;
-	float z_min, z_max;
+	double x_min, x_max;
+	double y_min, y_max;
+	double z_min, z_max;
 	
 	BezTriangleMesh(const vector<Vector3D>& _verts, int _width, Material *_mat);
-	bool hit(const Ray& r, float tmin, float tmax, HitRecord& record) const;
-	bool shadowHit(const Ray& r, float tmin, float tmax, Material*& mat) const;
-	BBox boundingBox(float time0, float time1) const;
+	bool hit(const Ray& r, double tmin, double tmax, HitRecord& record) const;
+	bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+	BBox boundingBox(double time0, double time1) const;
 };
 
 #endif

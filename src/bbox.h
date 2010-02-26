@@ -12,15 +12,15 @@ public:
 	  BBox(vector<Vector3D>& verts);
       Vector3D min() const { return pp[0]; }
       Vector3D max() const { return pp[1]; }
-      bool rayIntersect(const Ray& r, float tmin, float tmax) const;
+      bool rayIntersect(const Ray& r, double tmin, double tmax) const;
 protected:
       Vector3D pp[2]; 
 };
 
 inline BBox::BBox(vector<Vector3D>& verts) {
-	float x_min, x_max;
-	float y_min, y_max;
-	float z_min, z_max;
+	double x_min, x_max;
+	double y_min, y_max;
+	double z_min, z_max;
 	
 	x_min = x_max = verts[0].x();
 	y_min = y_max = verts[0].y();
@@ -40,13 +40,13 @@ inline BBox::BBox(vector<Vector3D>& verts) {
 	pp[1] = Vector3D(x_max, y_max, z_max);
 }
 
-inline bool BBox::rayIntersect(const Ray& r, float tmin, float tmax) const {
+inline bool BBox::rayIntersect(const Ray& r, double tmin, double tmax) const {
 
-   float interval_min = tmin;
-   float interval_max = tmax;
+   double interval_min = tmin;
+   double interval_max = tmax;
 
-   float t0 = (pp[r.posneg[0]].e[0] - r.data[0].e[0]) * r.data[2].e[0];
-   float t1 = (pp[r.posneg[1]].e[0] - r.data[0].e[0]) * r.data[2].e[0];
+   double t0 = (pp[r.posneg[0]].e[0] - r.data[0].e[0]) * r.data[2].e[0];
+   double t1 = (pp[r.posneg[1]].e[0] - r.data[0].e[0]) * r.data[2].e[0];
    if (t0 > interval_min) interval_min = t0;
    if (t1 < interval_max) interval_max = t1;
    if (interval_min > interval_max) return false;
