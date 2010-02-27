@@ -11,18 +11,18 @@ void Scene::addLight(Light *l) {
 
 Image Scene::createImage(int H, int W) {
 	Image im(H, W);
-	
+		
 	// Along the y-axis
 	for (int y = 0; y < H; y++) {
 		// Along the x-axis
         for (int x = 0; x < W; x++) {
-			if (x == 80 && y == 351) {
-				int xxx = 234123;
-			}
 			Ray r = cam.getRay(x, y, W, H);
 			im.set(x, H-y-1, traceRay(r, MAX_RECURSION_DEPTH));
         }
+		float percent = ((y+1) /(float) H)*100;
+		cerr << "\rRendering: " << (int) percent << "%";
     }
+	cerr << endl;
 	return im;
 }
 

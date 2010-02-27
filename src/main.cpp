@@ -17,6 +17,7 @@
 #include "marbletexture.h"
 #include "shapes/beztrianglemesh.h"
 #include "shapes/bezierpatch.h"
+#include "shapes/teapot.h"
 
 using namespace std;
 
@@ -26,7 +27,8 @@ using namespace std;
 // #define BALLS
 // #define MARBLE
 // #define TRIMESH_TEST
-#define BEZ_PATCH_TEST
+// #define BEZ_PATCH_TEST
+#define TEAPOT
 
 int main() {
 #ifdef BALLS
@@ -237,7 +239,7 @@ int main() {
 	Camera cam = Camera(Vector3D(8, 7, 6),
 						Vector3D(0, 0, 0),
 			    		Vector3D(0, 0, 1),
-			    		40.0f, 1);	
+			    		40.0, 1);	
 
 	Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0, 0) );
 
@@ -274,6 +276,43 @@ int main() {
 
     im.writePPM(cout);
 	
+	}
+#elif defined(TEAPOT)
+ 	{
+	Camera cam = Camera(Vector3D(0, 4, 10),
+						Vector3D(0, 1, 0),
+						Vector3D(0, 1, 0),
+						80.0, 1);
+						
+	Scene scene(cam, RGB(0, 0.1, 0.6), RGB(0.1, 0.1, 0.1), Vector3D(1, 0, 0));
+	
+	scene.addLight(new Light(Vector3D(10, 10, 0), RGB(1, 1, 1)) );
+	scene.addLight(new Light(Vector3D(10, 10, 10), RGB(1, 1, 1)) );
+	
+	Matrix trans = scale(2, 2, 2);
+	Instance *teapot = new Instance(trans, new Teapot(7, 128, 128, 
+							new Material(0.1, 0.7, 0.2, 10, 0.0, 1.52,
+									new MarbleTexture(
+										RGB(0.0, 0.8, 0.9), // p0
+										RGB(0.0, 0.0, 0.3), // p1
+										RGB(0.0, 0.2, 0.4), // m0
+										RGB(0.0, 0.8, 0.9), // m1
+										Vector3D(0, 0, 1),
+										0.5f,
+										7, 4)) ) );
+	
+	Plane *plane = new Plane( Vector3D(0, 1, 0),
+		  			  	      Vector3D(0, 0, 0),
+					  			new Material(0.1, 0.3, 0.6, 10, 0.0, 1.52,
+									new SimpleTexture(RGB(0.9, 0.9, 0.1))) );
+									
+	scene.addShape(teapot);
+	scene.addShape(plane);		
+
+	Image im = scene.createImage(512, 512);
+
+    im.writePPM(cout);
+
 	}
 #endif
 }
