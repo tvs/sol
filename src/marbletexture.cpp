@@ -33,5 +33,4 @@ RGB MarbleTexture::value(const Vector2D& uv, const Vector3D& p) const
 	
 	return 	(2*ttt - 3*tt + 1)*p0 + 2.0*(ttt - 2*tt + t)*m0 
 		  + (-2*ttt + 3*tt)*p1    + 2.0*(ttt - tt)*m1;
-	
 }

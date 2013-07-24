@@ -17,7 +17,7 @@ public:
 	
 	BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, int v_detail, Material* _mat);
 	bool hit(const Ray& r, double tmin, double tmax, HitRecord& record) const;
-    bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
+  bool shadowHit(const Ray& r, double tmin, double tmax, Material*& mat) const;
 	BBox boundingBox(double time0, double time1) const;
 };
 

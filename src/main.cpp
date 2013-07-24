@@ -31,6 +31,7 @@ using namespace std;
 #define TEAPOT
 
 int main() {
+  cerr << "Render started.\n";
 #ifdef BALLS
 	{
 	double KA = 0.1f;
@@ -289,7 +290,7 @@ int main() {
 	scene.addLight(new Light(Vector3D(10, 10, 0), RGB(1, 1, 1)) );
 	scene.addLight(new Light(Vector3D(10, 10, 10), RGB(1, 1, 1)) );
 	
-	Matrix trans = scale(2, 2, 2);
+  Matrix trans = scale(2, 2, 2);
 	Instance *teapot = new Instance(trans, new Teapot(7, 128, 128, 
 							new Material(0.1, 0.7, 0.2, 10, 0.0, 1.52,
 									new MarbleTexture(
@@ -310,9 +311,9 @@ int main() {
 	scene.addShape(plane);		
 
 	Image im = scene.createImage(512, 512);
-
-    im.writePPM(cout);
-
+  cerr << "Render completed.\nWriting file.\n";
+  im.writePPM(cout);
+  cerr << "Writing completed.\n";
 	}
 #endif
 }

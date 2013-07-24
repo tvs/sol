@@ -3,7 +3,7 @@
 BezierPatch::BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, int v_detail, Material* _mat)
 	: material(_mat)
 {	
-	// Find a better way to automatically determine partitioning from u and v detail
+	// TODO: Find a better way to automatically determine partitioning from u and v detail
 	int parts = pow(2.0, partitions);
 	
 	double du = 1.0/u_detail;
@@ -32,32 +32,7 @@ BezierPatch::BezierPatch(Vector3D (*vects)[4][4], int partitions, int u_detail, 
 			}	
 			meshes.push_back(new BezTriangleMesh(verts, u_detail+1, material));
 		}
-		
-		
-		
-		
 	}
-	
-	// Splitting in the U direction
-	// for (int k = 0; k < BEZIER_PARTITIONS; k++) {
-	// 		vector<Vector3D> verts;
-	// 		for (int j = 0; j <= v_detail; j++) {
-	// 			for (int i = 0; i <= u_detail; i++) {
-	// 				verts.push_back(eval((k + i) * du, j * dv, vects));
-	// 			}
-	// 		}
-	// 		meshes.push_back(new BezTriangleMesh(verts, u_detail+1, material));
-	// 	}
-	// 	
-	// 	for (int k = 1; k <= BEZIER_PARTITIONS; k++) {
-	// 		vector<Vector3D> verts;
-	// 		for (int j = 0; j <= v_detail; j++) {
-	// 			for (int i = 0; i <= u_detail; i++) {
-	// 				verts.push_back(eval(i * du, (k + j) * dv, vects));
-	// 			}
-	// 		}
-	// 		meshes.push_back(new BezTriangleMesh(verts, u_detail+1, material));
-	// 	}
 	
 	bvh = new BVH(meshes);
 }
