@@ -1,51 +1,51 @@
-= Sol
+# Sol
 
-== VERSION
+## VERSION
 Version 0.1, February 4, 2010
 
-== DESCRIPTION
+## DESCRIPTION
 Sol is a C++ ray tracer designed for a computer graphics course. The hope is to create a
 framework that can then be added to over the course of the semester.
 
-== BUILDING AND RUNNING
-= BUILDING
+## BUILDING AND RUNNING
+# BUILDING
 Run Gnumake from the top-level directory of the project by using the command:
-<tt>$ make </tt>
+`$ make`
 
 This will place the executable in the top-level directory
 
-= RUNNING
+# RUNNING
 Run Sol from the top-level directory of the project by using the command:
-<tt>$ ./sol > [imagefile.ppm]</tt>
+`$ ./sol > [imagefile.ppm]`
 
 For different images, comment or uncomment macros in src/main.cpp
 
-= CLEANING
+# CLEANING
 To remove the object files created during compilation:
-<tt>$ make clean</tt>
+`$ make clean`
 
 To remove the object files and the executable:
-<tt>$ make clobber</tt>
+`$ make clobber`
 
-== REQUIREMENTS
+## REQUIREMENTS
 
 * G++ compiler
 * Make
 
-== RECOMMENDED
+## RECOMMENDED
 
 * PPM viewing application
 
-== AUTHOR
+## AUTHOR
 Travis Hall
 
 trvs.hll@gmail.com
 
-== FILEMANIFEST
+## FILE MANIFEST
 
 * Makefile                      Makefile for building the entire project
 
-=== SOURCE
+### SOURCE
 * src/bbox.h                    Bounding box class
 * src/bvh.{cpp,h}               Bounding volume hierarchy class
 * src/camera.h                  Camera class for setting up the view and projection
@@ -87,10 +87,10 @@ trvs.hll@gmail.com
 * src/util/vector2d.h           Two-dimensional vector class
 * src/util/vector3d.h           Three-dimensional vector class
 
-=== DOCUMENTS
+### DOCUMENTS
 * doc/README
 
-=== IMAGES
+### IMAGES
 * images/2lights.ppm            Sample image using two lights instead of just one.
 * images/2lights-attenuated.ppm Sample image using two lights instead of just one, with
                                 attenuation values set as: constant = 1, linear = 0.02,

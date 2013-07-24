@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>src/main.cpp</string>
+	<string>Makefile</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,33 +21,19 @@
 	<integer>215</integer>
 	<key>metaData</key>
 	<dict>
-		<key>src/image/image.cpp</key>
+		<key>Makefile</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>21</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>18</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>44</integer>
-		</dict>
-		<key>src/main.cpp</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>45</integer>
-				<key>line</key>
-				<integer>313</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
 			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>32</integer>
 		</dict>
 		<key>src/shapes/unitsphere.cpp</key>
 		<dict>
@@ -80,8 +66,7 @@
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>src/image/image.cpp</string>
-		<string>src/main.cpp</string>
+		<string>Makefile</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
